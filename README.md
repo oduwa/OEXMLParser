@@ -10,7 +10,7 @@ A Robust Asynchronous XML Parser
 
 You can simply create an OEXMLParser object and pass it the source URL for the XML as a String and then call ``` fetchXML() ```. When Parsing is complete, get the results with the ``` getResults() ``` method This will return an array list of dictionaries (Hashmaps) where the keys are the XML tags and the corresponding values are the values within the XML tags
 
-```smalltalk
+```java
   String urlString = "http://www.SomeAwesomeFeed/rss";
   OEXMLParser parser = new OEXMLParser(urlString);
   parser.fetchXML();
@@ -25,7 +25,7 @@ Do note that the method ``` fetchXML() ``` is the default method and is intended
 ## Flexible And Custom Usage ##
 For more practical use cases, you will probably need more than just the default tags specified above. With **OEXMLParser** you can specify what XML tags you want to retrieve. In this case you can use the ``` fetchXMLForKeys() ``` method. An example is shown below
 
-```smalltalk
+```java
   String urlString = "http://www.SomeAwesomeFeed/rss";
   OEXMLParser parser = new OEXMLParser(urlString);
   parser.fetchXMLForKeys("title", "specialImage", "link" "video", "someOtherCoolTag");
@@ -40,7 +40,7 @@ Again, the result is an array list of dictionaries (Hashmaps) where the keys are
 ## HTTP Authentication ##
 Not impressed with **OEXMLParser** yet. Well make arrangements for brain transplants because your mind is about to be blown! **OEXMLParser** also supports Http authentication for those situations where authentication is needed to access the desired XML files. This is achieved by using the ``` fetchXMLForKeysWithAuthentication() ``` method. An example is shown below
 
-```smalltalk
+```java
   String urlString = "http://www.SomeAwesomeFeed/rss";
   OEXMLParser parser = new OEXMLParser(urlString);
   parser.fetchXMLForKeysWithAuthentication("myUsername", "myPassword", "title", "image");
