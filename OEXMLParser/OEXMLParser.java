@@ -3,12 +3,19 @@ package com.odie.animehub;
 import android.util.Base64;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -88,6 +95,20 @@ public class OEXMLParser {
                     conn.connect();
                     InputStream stream = conn.getInputStream();
 
+                    // Get XML string and escape it
+                    String XMLString = getStringForXMLData(stream);
+                    String escapedXMLString = removeHTMLEntities(XMLString);
+
+                    if(escapedXMLString.equalsIgnoreCase("No results")){
+                        results.clear();
+                        parsingComplete = false;
+                        stream.close();
+                        return;
+                    }
+
+                    // Convert escaped string back to stream data
+                    stream = new ByteArrayInputStream(escapedXMLString.getBytes("UTF-8"));
+
 
                     xmlFactoryObject = XmlPullParserFactory.newInstance();
                     XmlPullParser myParser = xmlFactoryObject.newPullParser();
@@ -96,8 +117,10 @@ public class OEXMLParser {
                     myParser.setInput(stream, null);
                     parseXMLAndStoreIt(myParser);
                     stream.close();
+
                 } catch (Exception e) {
                     e.printStackTrace();
+                    parsingComplete = false;
                 }
             }
         });
@@ -168,6 +191,7 @@ public class OEXMLParser {
             parsingComplete = false;
         } catch (Exception e) {
             e.printStackTrace();
+            parsingComplete = false;
         }
 
     }
@@ -190,6 +214,19 @@ public class OEXMLParser {
                     conn.connect();
                     InputStream stream = conn.getInputStream();
 
+                    // Get XML string and escape it
+                    String XMLString = getStringForXMLData(stream);
+                    String escapedXMLString = removeHTMLEntities(XMLString);
+
+                    if(escapedXMLString.equalsIgnoreCase("No results")){
+                        results.clear();
+                        parsingComplete = false;
+                        stream.close();
+                        return;
+                    }
+
+                    // Convert escaped string back to stream data
+                    stream = new ByteArrayInputStream(escapedXMLString.getBytes("UTF-8"));
 
                     xmlFactoryObject = XmlPullParserFactory.newInstance();
                     XmlPullParser myParser = xmlFactoryObject.newPullParser();
@@ -200,6 +237,7 @@ public class OEXMLParser {
                     stream.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    parsingComplete = false;
                 }
             }
         });
@@ -227,6 +265,21 @@ public class OEXMLParser {
                     conn.connect();
                     InputStream stream = conn.getInputStream();
 
+                    // Get XML string and escape it
+                    String XMLString = getStringForXMLData(stream);
+                    String escapedXMLString = removeHTMLEntities(XMLString);
+
+                    Log.d("POKEMON", "x"+escapedXMLString.trim()+"x");
+                    if(escapedXMLString.trim().equalsIgnoreCase("No results") || escapedXMLString.equalsIgnoreCase("")){
+                        results.clear();
+                        parsingComplete = false;
+                        stream.close();
+                        return;
+                    }
+
+                    // Convert escaped string back to stream data
+                    stream = new ByteArrayInputStream(escapedXMLString.getBytes("UTF-8"));
+
 
                     xmlFactoryObject = XmlPullParserFactory.newInstance();
                     XmlPullParser myParser = xmlFactoryObject.newPullParser();
@@ -237,6 +290,7 @@ public class OEXMLParser {
                     stream.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    parsingComplete = false;
                 }
             }
         });
@@ -308,11 +362,43 @@ public class OEXMLParser {
 
         } catch (Exception e) {
             e.printStackTrace();
+            parsingComplete = false;
         }
 
     }
 
+
+    /************************ HELPER METHODS *******************************/
+    private String getStringForXMLData(InputStream inputStream){
+        String result = "";
+
+        try {
+            BufferedReader input = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            StringBuilder strB = new StringBuilder();
+            String str;
+            while (null != (str = input.readLine())) {
+                strB.append(str).append("\r\n");
+            }
+            input.close();
+            result = strB.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            parsingComplete = false;
+        }
+
+        return result;
+    }
+
+    private String removeHTMLEntities(String string){
+        return  string.replaceAll("&.{0,}?;", "");
+    }
+
+
+
 }
+
+
+
 
 
 
