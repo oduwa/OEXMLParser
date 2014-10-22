@@ -269,7 +269,6 @@ public class OEXMLParser {
                     String XMLString = getStringForXMLData(stream);
                     String escapedXMLString = removeHTMLEntities(XMLString);
 
-                    Log.d("POKEMON", "x"+escapedXMLString.trim()+"x");
                     if(escapedXMLString.trim().equalsIgnoreCase("No results") || escapedXMLString.equalsIgnoreCase("")){
                         results.clear();
                         parsingComplete = false;
