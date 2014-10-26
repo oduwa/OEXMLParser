@@ -1,7 +1,7 @@
 OEXMLParser
 ===========
 
-A Robust Asynchronous XML Parser
+A Robust Asynchronous XML Parser for Android
 
 
 **OEXMLParser** is a helper class that allows for simple and flexible parsing of XML files and **particularly useful for RSS feeds**. Read below to see how simple and awesome it is!
