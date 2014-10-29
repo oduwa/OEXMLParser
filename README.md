@@ -38,7 +38,7 @@ For more practical use cases, you will probably need more than just the default 
 Again, the result is an array list of dictionaries (Hashmaps) where the keys are the XML tags and the corresponding values are the values within the XML tags.
 
 ## HTTP Authentication ##
-Not impressed with **OEXMLParser** yet. Well make arrangements for brain transplants because your mind is about to be blown! **OEXMLParser** also supports Http authentication for those situations where authentication is needed to access the desired XML files. This is achieved by using the ``` fetchXMLForKeysWithAuthentication() ``` method. An example is shown below
+Not impressed with **OEXMLParser** yet. Well make arrangements for a brain transplant because your mind is about to be blown! **OEXMLParser** also supports Http authentication for those situations where authentication is needed to access the desired XML files. This is achieved by using the ``` fetchXMLForKeysWithAuthentication() ``` method. An example is shown below
 
 ```java
   String urlString = "http://www.SomeAwesomeFeed/rss";
