@@ -8,12 +8,31 @@ A Robust Asynchronous XML Parser for Android
 
 ## Getting Started ##
 
-You can simply create an OEXMLParser object and pass it the source URL for the XML as a String and then call ``` fetchXML() ```. When Parsing is complete, get the results with the ``` getResults() ``` method This will return an array list of dictionaries (Hashmaps) where the keys are the XML tags and the corresponding values are the values within the XML tags
+You can simply create an OEXMLParser object and pass it the source URL for the XML as a String and then call ``` fetchXMLWithCallback() ```. Within the callback you can specify what to be done with the results once the XML data has been parsed.
 
 ```java
   String urlString = "http://www.SomeAwesomeFeed/rss";
   OEXMLParser parser = new OEXMLParser(urlString);
-  parser.fetchXML();
+  parser.fetchXMLWithCallback(new OEXMLParser.XMLTask.XMLCallback() {
+            @Override
+            public void onComplete(ArrayList<HashMap<String, String>> result) {
+                if(result != null){
+                   // Retreive results
+                   ArrayList<HashMap<String, String>> parsedStuff = results;
+                }
+                else{
+                    // error occured. 
+                }
+            }
+        });
+```
+
+If for whatever reason, you need to parse the data synchronously, instead of calling ```fetchXMLWithCallback()```, you call ```fetchXML_Support()```. When Parsing is complete, get the results with the ``` getResults() ``` method This will return an array list of dictionaries (Hashmaps) where the keys are the XML tags and the corresponding values are the values within the XML tags. This is the synchronous approach.
+
+```java
+  String urlString = "http://www.SomeAwesomeFeed/rss";
+  OEXMLParser parser = new OEXMLParser(urlString);
+  parser.fetchXML_Support();
   
   while(parser.parsingComplete);
   
